@@ -11,13 +11,19 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ItemController {
     @Autowired
     ItemRepo repo;
 
     @PostMapping("/addItem")
-    public void addItems(@RequestBody Item item) {
-        repo.save(item);
+    public String addItems(@RequestBody Item item) {
+        try {
+            repo.save(item);
+            return "Data Posted Succesfully for itemId: " + item.getItemId() + " and item name: " + item.getItemName();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/getItem")
